@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.security.NewApp.security.jwt.JwtGeneratorFilter;
 import com.security.NewApp.security.jwt.JwtValidationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -45,8 +46,8 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtValidationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter( new JwtGeneratorFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtValidationFilter, BasicAuthenticationFilter.class)
+                .addFilterAfter( jwtGeneratorFilter, BasicAuthenticationFilter.class)
                .httpBasic(Customizer.withDefaults())
                .formLogin(Customizer.withDefaults()).build();
     }

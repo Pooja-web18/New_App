@@ -20,7 +20,7 @@ public class User {
     private String password;
     private String email;
 
-    public UserDetails orElseThrow(Object userNotFound) {
-        return null;
-    }
+//    public UserDetails orElseThrow(Object userNotFound) {
+//        return null;
+//    }
 }

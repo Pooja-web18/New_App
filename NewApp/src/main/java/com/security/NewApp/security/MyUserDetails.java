@@ -21,24 +21,24 @@ public class MyUserDetails implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return user.getUsername();
+    }
+
+
+    @Override
     public String getPassword() {
         return user.getPassword();
     }
 
-    @Override
-    public String getUsername() {
-        return user.getEmail(); // Assuming email is the username
-    }
 
     @Override
     public boolean isAccountNonExpired() {
-        // Implement based on your requirements
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-
         return true;
     }
 

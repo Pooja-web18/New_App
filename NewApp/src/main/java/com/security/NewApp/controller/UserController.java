@@ -38,28 +38,32 @@ public class UserController {
         }
     }
 
-
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-
+    @GetMapping("/login")
+    public ResponseEntity<String> login(Authentication authentication) {
         try {
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-
-            Authentication authentication = authenticationManager.authenticate(authToken);
-
-            return ResponseEntity.ok("Login successful for user: " + authentication.getName());
-
+            User user = userService.findByUsername(authentication.getName());
+            return ResponseEntity.ok("Login successful for user: " + user.getUsername());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(401).body("Invalid username or password");
         }
     }
-
 
 
     @GetMapping("/welcome")
     public ResponseEntity<String> welcome() {
         return ResponseEntity.ok("Welcome to the New_App");
+    }
+
+    @GetMapping("/users/username/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userService.findByEmail(email);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.util.Collections;
 
 @Slf4j
 @Component
@@ -41,11 +42,16 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 
                 String username = claims.get("username", String.class);
 
-                Authentication auth = new UsernamePasswordAuthenticationToken(username, null);
+                Authentication auth = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
+                log.info("Authenticated user: {}" , username);
+
             } catch (Exception e) {
-                throw new BadCredentialsException("Invalid JWT Token received.");
+//                throw new BadCredentialsException("Invalid JWT Token received.");
+                log.error("JWT validation failed: {}", e.getMessage());
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+                return;
             }
         }
 
