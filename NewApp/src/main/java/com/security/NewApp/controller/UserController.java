@@ -54,16 +54,13 @@ public class UserController {
         return ResponseEntity.ok("Welcome to the New_App");
     }
 
-    @GetMapping("/users/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        User user = userService.findByUsername(username);
+    @GetMapping("/users")
+    public ResponseEntity<User> getUserDetails(Authentication authentication) {
+        User user = userService.findByUsername(authentication.getName());
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/users/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        User user = userService.findByEmail(email);
-        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
-    }
+
+
 
 }
